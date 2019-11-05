@@ -56,6 +56,38 @@ def find_median(arr1, arr2):
 
     arr1_left_last_index = get_median_index(arr1)
     arr2_left_last_index = get_median_index(arr2)
+
+    if contains_single_element(arr1):
+        if arr1[arr1_left_last_index] > arr2[arr2_left_last_index]:
+            if (len(arr1) + len(arr2)) % 2 == 0:
+                return get_average(arr1[arr1_left_last_index], arr2[arr2_left_last_index])
+            else:
+                return arr1[arr1_left_last_index]
+        else:
+            if (len(arr1) + len(arr2)) % 2 == 0:
+                if arr1[arr1_left_last_index] < arr2[arr2_left_last_index - 1]:
+                    return get_average(arr2[arr2_left_last_index], arr2[arr2_left_last_index - 1])
+                else:
+                    return get_average(arr2[arr2_left_last_index], arr1[arr1_left_last_index])
+            else:
+                return arr2[arr2_left_last_index]
+
+    if contains_single_element(arr2):
+        if arr1[arr1_left_last_index] < arr2[arr2_left_last_index]:
+            if (len(arr1) + len(arr2)) % 2 == 0:
+                return get_average(arr1[arr1_left_last_index], arr2[arr2_left_last_index])
+            else:
+                return arr2[arr2_left_last_index]
+        else:
+            if (len(arr1) + len(arr2)) % 2 == 0:
+                if arr2[arr2_left_last_index] < arr1[arr1_left_last_index - 1]:
+                    return get_average(arr1[arr1_left_last_index], arr1[arr1_left_last_index - 1])
+                else:
+                    return get_average(arr1[arr1_left_last_index], arr2[arr2_left_last_index])
+            else:
+                return arr1[arr1_left_last_index]
+
+
     # if both are odd it means that their left halfs would be 1 element bigger than the right
     # so if the first left half is bigger by one element than the right one
     # we want to make sure in the second array it's opposite
@@ -107,7 +139,7 @@ def find_median(arr1, arr2):
                 return max(arr1[arr1_right_first_index], arr2[arr2_left_last_index])
 
 
-nums1 = [0, 0, 0, 0, 0]
-nums2 = [2, 3, 4, 5, 6]
+nums1 = [1, 3]
+nums2 = [2]
 
-print(find_median(nums1, nums2))
+print(find_median(nums2, nums1))
