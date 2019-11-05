@@ -42,6 +42,28 @@ def is_shiftable_right(arr, index):
     return index < len(arr) - 2
 
 
+def get_median_single_element_array(arr, single_element_arr):
+    arr_median_index = get_median_index(arr)
+    single_element_arr_median_index = get_median_index(single_element_arr)
+
+    if arr[arr_median_index] < single_element_arr[single_element_arr_median_index]:
+        if arr[arr_median_index + 1] < single_element_arr[single_element_arr_median_index]:
+            next_to_median = arr[arr_median_index + 1]
+        else:
+            next_to_median = single_element_arr[single_element_arr_median_index]
+    else:
+        if arr_median_index != 0:
+            if single_element_arr[single_element_arr_median_index] < arr[arr_median_index - 1]:
+                next_to_median = arr[arr_median_index - 1]
+            else:
+                next_to_median = single_element_arr[single_element_arr_median_index]
+
+    if (len(arr) + len(single_element_arr)) % 2 == 0:
+        return get_average(arr[arr_median_index], next_to_median)
+    else:
+        return arr[arr_median_index]
+
+
 def find_median(arr1, arr2):
     # when one of the arrays is empty return the median of another
     # assuming they both cannot be empty
@@ -54,39 +76,14 @@ def find_median(arr1, arr2):
     if contains_single_element(arr1) and contains_single_element(arr2):
         return get_average(arr1[0], arr2[0])
 
-    arr1_left_last_index = get_median_index(arr1)
-    arr2_left_last_index = get_median_index(arr2)
-
     if contains_single_element(arr1):
-        if arr1[arr1_left_last_index] > arr2[arr2_left_last_index]:
-            if (len(arr1) + len(arr2)) % 2 == 0:
-                return get_average(arr1[arr1_left_last_index], arr2[arr2_left_last_index])
-            else:
-                return arr1[arr1_left_last_index]
-        else:
-            if (len(arr1) + len(arr2)) % 2 == 0:
-                if arr1[arr1_left_last_index] < arr2[arr2_left_last_index - 1]:
-                    return get_average(arr2[arr2_left_last_index], arr2[arr2_left_last_index - 1])
-                else:
-                    return get_average(arr2[arr2_left_last_index], arr1[arr1_left_last_index])
-            else:
-                return arr2[arr2_left_last_index]
+        return get_median_single_element_array(arr2, arr1)
 
     if contains_single_element(arr2):
-        if arr1[arr1_left_last_index] < arr2[arr2_left_last_index]:
-            if (len(arr1) + len(arr2)) % 2 == 0:
-                return get_average(arr1[arr1_left_last_index], arr2[arr2_left_last_index])
-            else:
-                return arr2[arr2_left_last_index]
-        else:
-            if (len(arr1) + len(arr2)) % 2 == 0:
-                if arr2[arr2_left_last_index] < arr1[arr1_left_last_index - 1]:
-                    return get_average(arr1[arr1_left_last_index], arr1[arr1_left_last_index - 1])
-                else:
-                    return get_average(arr1[arr1_left_last_index], arr2[arr2_left_last_index])
-            else:
-                return arr1[arr1_left_last_index]
+        return get_median_single_element_array(arr1, arr2)
 
+    arr1_left_last_index = get_median_index(arr1)
+    arr2_left_last_index = get_median_index(arr2)
 
     # if both are odd it means that their left halfs would be 1 element bigger than the right
     # so if the first left half is bigger by one element than the right one
@@ -139,7 +136,7 @@ def find_median(arr1, arr2):
                 return max(arr1[arr1_right_first_index], arr2[arr2_left_last_index])
 
 
-nums1 = [1, 3]
-nums2 = [2]
+nums1 = [0, 0]
+nums2 = [2, 3]
 
 print(find_median(nums2, nums1))
