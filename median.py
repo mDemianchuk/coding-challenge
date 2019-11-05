@@ -34,6 +34,14 @@ def get_median(arr):
     return median
 
 
+def is_shiftable_left(index):
+    return index > 0
+
+
+def is_shiftable_right(arr, index):
+    return index < len(arr) - 2
+
+
 def find_median(arr1, arr2):
     # when one of the arrays is empty return the median of another
     # assuming they both cannot be empty
@@ -54,9 +62,6 @@ def find_median(arr1, arr2):
     if is_odd(arr1) and is_odd(arr2):
         arr2_left_last_index = arr2_left_last_index - 1
 
-    print(arr1_left_last_index)
-    print(arr2_left_last_index)
-
     while True:
         arr1_right_first_index = arr1_left_last_index + 1
         arr2_right_first_index = arr2_left_last_index + 1
@@ -74,19 +79,35 @@ def find_median(arr1, arr2):
 
         # need to adjust indexes that split the arrays
         elif arr1[arr1_left_last_index] > arr2[arr2_right_first_index]:
-            # arr1 split point shifts to the left
-            arr1_left_last_index = arr1_left_last_index - 1
-            # arr1 split point shifts to the right
-            arr2_left_last_index = arr2_left_last_index + 1
+            arr1_shiftable = is_shiftable_left(arr1_left_last_index)
+            arr2_shiftable = is_shiftable_right(arr2, arr2_left_last_index)
+
+            if arr1_shiftable:
+                arr1_left_last_index = arr1_left_last_index - 1
+            if arr2_shiftable:
+                arr2_left_last_index = arr2_left_last_index + 1
+
+            if not arr1_shiftable and not arr2_shiftable:
+                if (len(arr1) + len(arr2)) % 2 == 0:
+                    return get_average(arr1[arr1_left_last_index], arr2[arr2_right_first_index])
+                return max(arr1[arr1_left_last_index], arr2[arr2_right_first_index])
 
         else:
-            # arr1 split point shifts to the right
-            arr1_left_last_index = arr1_left_last_index + 1
-            # arr1 split point shifts to the left
-            arr2_left_last_index = arr2_left_last_index - 1
+            arr2_shiftable = is_shiftable_left(arr2_left_last_index)
+            arr1_shiftable = is_shiftable_right(arr1, arr1_left_last_index)
+
+            if arr2_shiftable:
+                arr2_left_last_index = arr2_left_last_index - 1
+            if arr1_shiftable:
+                arr1_left_last_index = arr1_left_last_index + 1
+
+            if not arr1_shiftable and not arr2_shiftable:
+                if (len(arr1) + len(arr2)) % 2 == 0:
+                    return get_average(arr1[arr1_right_first_index], arr2[arr2_left_last_index])
+                return max(arr1[arr1_right_first_index], arr2[arr2_left_last_index])
 
 
-nums1 = [0, 0, 0, 0, 4]
+nums1 = [0, 0, 0, 0, 0]
 nums2 = [2, 3, 4, 5, 6]
 
 print(find_median(nums1, nums2))
