@@ -46,22 +46,23 @@ def get_median_single_element_array(arr, single_element_arr):
     arr_median_index = get_median_index(arr)
     single_element_arr_median_index = get_median_index(single_element_arr)
 
-    if arr[arr_median_index] < single_element_arr[single_element_arr_median_index]:
-        if arr[arr_median_index + 1] < single_element_arr[single_element_arr_median_index]:
-            next_to_median = arr[arr_median_index + 1]
+    if is_odd(arr):
+        median = arr[arr_median_index]
+        # since the merged array will be even, we need to find find two middle numbers
+        if arr[arr_median_index] < single_element_arr[single_element_arr_median_index]:
+            next_to_median = min(arr[arr_median_index + 1], single_element_arr[single_element_arr_median_index])
         else:
-            next_to_median = single_element_arr[single_element_arr_median_index]
-    else:
-        if arr_median_index != 0:
-            if single_element_arr[single_element_arr_median_index] < arr[arr_median_index - 1]:
-                next_to_median = arr[arr_median_index - 1]
-            else:
-                next_to_median = single_element_arr[single_element_arr_median_index]
+            next_to_median = min(arr[arr_median_index - 1], single_element_arr[single_element_arr_median_index])
+        return get_average(median, next_to_median)
 
-    if (len(arr) + len(single_element_arr)) % 2 == 0:
-        return get_average(arr[arr_median_index], next_to_median)
     else:
-        return arr[arr_median_index]
+        # the number goes to the right of the median
+        if arr[arr_median_index] < single_element_arr[single_element_arr_median_index]:
+            median = min(arr[arr_median_index + 1], single_element_arr[single_element_arr_median_index])
+        # the number goes to the left
+        else:
+            median = arr[arr_median_index]
+        return median
 
 
 def find_median(arr1, arr2):
@@ -136,7 +137,7 @@ def find_median(arr1, arr2):
                 return max(arr1[arr1_right_first_index], arr2[arr2_left_last_index])
 
 
-nums1 = [0, 0]
-nums2 = [2, 3]
+nums1 = [1, 1, 2]
+nums2 = [2]
 
-print(find_median(nums2, nums1))
+print(find_median(nums1, nums2))
