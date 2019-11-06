@@ -15,7 +15,7 @@ def is_odd_length(arr):
 
 
 def get_average(num1, num2):
-    return (num1 + num2) / 2
+    return (num1 + num2) / 2.0
 
 
 def get_median_index(arr):
@@ -127,8 +127,8 @@ def find_median(arr1, arr2):
                 arr1_left_last_index = arr1_left_last_index + 1
 
 
-nums1 = [3, 4, 5]
-nums2 = [1, 2, 3]
+nums1 = [5, 5, 5, 5, 5]
+nums2 = [6, 6, 6, 6, 6]
 
 print(find_median(nums1, nums2))
 print(find_median(nums2, nums1))
