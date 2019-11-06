@@ -108,38 +108,73 @@ def find_median(arr1, arr2):
             return median
         # need to adjust indexes that split the arrays
         else:
-            number_of_elements_left = arr1_left_last_index + arr2_left_last_index + 2
-            number_of_elements_right = len(arr1) + len(arr2) - number_of_elements_left
-            shiftable_right = number_of_elements_left - 1 == number_of_elements_right
-            shiftable_left = number_of_elements_right - 1 == number_of_elements_left
-
             if arr1[arr1_left_last_index] <= arr2[arr2_right_first_index]:
-                shiftable_right = shiftable_right and is_shiftable_right(arr1, arr1_right_first_index)
-                shiftable_left = shiftable_left and is_shiftable_left(arr2_left_last_index)
-                min_right = arr1[arr1_right_first_index]
-                max_left = arr2[arr2_left_last_index]
+                shiftable_right = is_shiftable_right(arr1, arr1_right_first_index)
+                shiftable_left = is_shiftable_left(arr2_left_last_index)
+
+                if not shiftable_left or not shiftable_right:
+                    number_of_elements_left = arr1_left_last_index + arr2_left_last_index + 2
+                    number_of_elements_right = len(arr1) + len(arr2) - number_of_elements_left
+
+                    shiftable_right = shiftable_right and number_of_elements_right - 1 == number_of_elements_left
+                    shiftable_left = shiftable_left and number_of_elements_left - 1 == number_of_elements_right
+
+                # if still shiftable
+                if shiftable_left:
+                    # shift the split point to the left
+                    arr2_left_last_index = arr2_left_last_index - 1
+
+                if shiftable_right:
+                    # shift the split point to the right
+                    arr1_left_last_index = arr1_left_last_index + 1
+
+                if not shiftable_left and not shiftable_right:
+                    max_left = arr1[arr1_right_first_index]
+                    if arr2_left_last_index != 0:
+                        max_left = max(max_left, arr2[arr2_left_last_index - 1])
+
+                    if (len(arr1) + len(arr2)) % 2 == 0:
+                        return get_average(max_left, arr2[arr2_left_last_index])
+                    if len(arr1) > len(arr2):
+                        return max_left
+                    else:
+                        return arr2[arr2_left_last_index]
+
             else:
-                shiftable_right = shiftable_right and is_shiftable_right(arr2, arr2_right_first_index)
-                shiftable_left = shiftable_left and is_shiftable_left(arr1_left_last_index)
-                min_right = arr2[arr2_right_first_index]
-                max_left = arr1[arr1_left_last_index]
+                shiftable_right = is_shiftable_right(arr2, arr2_right_first_index)
+                shiftable_left = is_shiftable_left(arr1_left_last_index)
 
-            if shiftable_left:
-                # shift the split point to the left
-                arr2_left_last_index = arr2_left_last_index - 1
+                if not shiftable_left or not shiftable_right:
+                    number_of_elements_left = arr1_left_last_index + arr2_left_last_index + 2
+                    number_of_elements_right = len(arr1) + len(arr2) - number_of_elements_left
 
-            if shiftable_right:
-                # shift the split point to the right
-                arr2_left_last_index = arr2_left_last_index + 1
+                    shiftable_right = shiftable_right and number_of_elements_right - 1 == number_of_elements_left
+                    shiftable_left = shiftable_left and number_of_elements_left - 1 == number_of_elements_right
 
-            elif not shiftable_left and not shiftable_right:
-                if (len(arr1) + len(arr2)) % 2 == 0:
-                    return get_average(min_right, max_left)
-                return min(min_right, max_left)
+                # if still shiftable
+                if shiftable_left:
+                    # shift the split point to the left
+                    arr1_left_last_index = arr1_left_last_index - 1
+
+                if shiftable_right:
+                    # shift the split point to the right
+                    arr2_left_last_index = arr2_left_last_index + 1
+
+                if not shiftable_left and not shiftable_right:
+                    max_left = arr2[arr2_right_first_index]
+                    if arr1_left_last_index != 0:
+                        max_left = max(max_left, arr1[arr1_left_last_index - 1])
+
+                    if (len(arr1) + len(arr2)) % 2 == 0:
+                        return get_average(max_left, arr1[arr1_left_last_index])
+                    if len(arr1) > len(arr2):
+                        return arr1[arr1_left_last_index]
+                    else:
+                        return max_left
 
 
-nums1 = [1, 2]
-nums2 = [3, 4]
+nums1 = [1, 2, 3]
+nums2 = [1, 3, 3]
 
 print(find_median(nums1, nums2))
 print(find_median(nums2, nums1))
