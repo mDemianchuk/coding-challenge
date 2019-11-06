@@ -125,13 +125,12 @@ def find_median(arr1, arr2):
                 number_of_elements_left = arr1_left_last_index + arr2_left_last_index + 2
                 number_of_elements_right = len(arr1) + len(arr2) - number_of_elements_left
 
-                if number_of_elements_left == number_of_elements_right:
-                    if shiftable_right:
-                        # shift the split point to the right
-                        arr1_left_last_index = arr1_left_last_index + 1
-                    if shiftable_left:
-                        # shift the split point to the left
-                        arr2_left_last_index = arr2_left_last_index - 1
+                if shiftable_right and number_of_elements_left - 1 == number_of_elements_right:
+                    # shift the split point to the right
+                    arr2_left_last_index = arr2_left_last_index + 1
+                if shiftable_left and number_of_elements_right - 1 == number_of_elements_left:
+                    # shift the split point to the left
+                    arr2_left_last_index = arr2_left_last_index - 1
                 else:
                     # if we can't shift anymore
                     if (len(arr1) + len(arr2)) % 2 == 0:
@@ -155,13 +154,12 @@ def find_median(arr1, arr2):
                 number_of_elements_left = arr2_left_last_index + arr1_left_last_index + 2
                 number_of_elements_right = len(arr1) + len(arr2) - number_of_elements_left
 
-                if number_of_elements_left == number_of_elements_right:
-                    if shiftable_right:
-                        # shift the split point to the right
-                        arr2_left_last_index = arr2_left_last_index + 1
-                    if shiftable_left:
-                        # shift the split point to the left
-                        arr1_left_last_index = arr1_left_last_index - 1
+                if shiftable_right and number_of_elements_left - 1 == number_of_elements_right:
+                    # shift the split point to the right
+                    arr2_left_last_index = arr2_left_last_index + 1
+                if shiftable_left and number_of_elements_right - 1 == number_of_elements_left:
+                    # shift the split point to the left
+                    arr1_left_last_index = arr1_left_last_index - 1
                 else:
                     # if we can't shift anymore
                     if (len(arr1) + len(arr2)) % 2 == 0:
