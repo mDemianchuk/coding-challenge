@@ -2,10 +2,6 @@ def is_empty(arr):
     return len(arr) == 0
 
 
-def contains_single_element(arr):
-    return len(arr) == 1
-
-
 def is_even_length(arr):
     return len(arr) % 2 == 0
 
@@ -42,28 +38,6 @@ def is_shiftable_right(arr, index):
     return index < len(arr)
 
 
-def get_median_single_element_array(arr, single_element_arr):
-    arr_median_index = get_median_index(arr)
-
-    if is_odd_length(arr):
-        median = arr[arr_median_index]
-        # since the merged array will be even length, we need to find find two middle numbers
-        if arr[arr_median_index] < single_element_arr[0]:
-            next_to_median = min(arr[arr_median_index + 1], single_element_arr[0])
-        else:
-            next_to_median = max(arr[arr_median_index - 1], single_element_arr[0])
-        return get_average(median, next_to_median)
-
-    else:
-        # the number goes to the right of the median
-        if arr[arr_median_index] < single_element_arr[0]:
-            median = min(arr[arr_median_index + 1], single_element_arr[0])
-        # the number goes to the left
-        else:
-            median = arr[arr_median_index]
-        return median
-
-
 def find_median(arr1, arr2):
     # when one of the arrays is empty return the median of another
     # assuming they both cannot be empty
@@ -71,16 +45,6 @@ def find_median(arr1, arr2):
         return get_median(arr2)
     elif is_empty(arr2):
         return get_median(arr1)
-
-    # when both contain only one number return the average of these elements
-    if contains_single_element(arr1) and contains_single_element(arr2):
-        return get_average(arr1[0], arr2[0])
-
-    if contains_single_element(arr1):
-        return get_median_single_element_array(arr2, arr1)
-
-    if contains_single_element(arr2):
-        return get_median_single_element_array(arr1, arr2)
 
     arr1_left_last_index = get_median_index(arr1)
     arr2_left_last_index = get_median_index(arr2)
@@ -125,10 +89,3 @@ def find_median(arr1, arr2):
                 arr2_left_last_index = arr2_left_last_index - 1
                 # shift the split point to the right
                 arr1_left_last_index = arr1_left_last_index + 1
-
-
-nums1 = [5, 5, 5, 5, 5]
-nums2 = [6, 6, 6, 6, 6]
-
-print(find_median(nums1, nums2))
-print(find_median(nums2, nums1))
