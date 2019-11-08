@@ -23,6 +23,7 @@ def merge(linked_lists):
 
     # if the return type should be Node
     # we need to collect all elements again but this time into a linked list of type Node
+    # this step adds O(n) time, but the resulting complexity still remains O (n log n)
     sorted_linked_list = Node()
     # so we still can have access to the first node
     head = sorted_linked_list
